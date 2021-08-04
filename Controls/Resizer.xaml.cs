@@ -53,71 +53,89 @@ namespace DolphinDynamicInputTextureCreator.Controls
             InitializeComponent();
         }
 
+
+        private void Upper_DragDelta(object sender, DragDeltaEventArgs e) => Expand_Up(e.VerticalChange);
+        private void Lower_DragDelta(object sender, DragDeltaEventArgs e) => Expand_Down(e.VerticalChange);
+        private void Left_DragDelta(object sender, DragDeltaEventArgs e) => Expand_Left(e.HorizontalChange);
+        private void Right_DragDelta(object sender, DragDeltaEventArgs e) => Expand_Right(e.HorizontalChange);
+
         private void UpperLeft_DragDelta(object sender, DragDeltaEventArgs e)
         {
-            double old_x = X;
-            double old_y = Y;
-            X = old_x + e.HorizontalChange;
-            Y = old_y + e.VerticalChange;
-
-            double horizontal_change = X - old_x;
-            double vertical_change = Y - old_y;
-
-            ItemHeight = ItemHeight + vertical_change * -1;
-            ItemWidth = ItemWidth + horizontal_change * -1;
-
-            if (ItemHeight < RegionMinHeight)
-                ItemHeight = RegionMinHeight;
-
-            if (ItemWidth < RegionMinWidth)
-                ItemWidth = RegionMinWidth;
+            Expand_Up(e.VerticalChange);
+            Expand_Left(e.HorizontalChange);
         }
 
         private void UpperRight_DragDelta(object sender, DragDeltaEventArgs e)
         {
-            double old_y = Y;
-            Y = old_y + e.VerticalChange;
-
-            double vertical_change = Y - old_y;
-
-            ItemHeight = ItemHeight + vertical_change * -1;
-            ItemWidth = ItemWidth + e.HorizontalChange;
-
-            if (ItemHeight < RegionMinHeight)
-                ItemHeight = RegionMinHeight;
-
-            if (ItemWidth < RegionMinWidth)
-                ItemWidth = RegionMinWidth;
+            Expand_Up(e.VerticalChange);
+            Expand_Right(e.HorizontalChange);
         }
 
         private void LowerLeft_DragDelta(object sender, DragDeltaEventArgs e)
         {
-            double old_x = X;
-            X = old_x + e.HorizontalChange;
-
-            double horizontal_change = X - old_x;
-
-            ItemHeight = ItemHeight + e.VerticalChange;
-            ItemWidth = ItemWidth + horizontal_change * -1;
-
-            if (ItemHeight < RegionMinHeight)
-                ItemHeight = RegionMinHeight;
-
-            if (ItemWidth < RegionMinWidth)
-                ItemWidth = RegionMinWidth;
+            Expand_Down(e.VerticalChange);
+            Expand_Left(e.HorizontalChange);
         }
 
         private void LowerRight_DragDelta(object sender, DragDeltaEventArgs e)
         {
-            ItemHeight = ItemHeight + e.VerticalChange;
-            ItemWidth = ItemWidth + e.HorizontalChange;
-
-            if (ItemHeight < RegionMinHeight)
-                ItemHeight = RegionMinHeight;
-
-            if (ItemWidth < RegionMinWidth)
-                ItemWidth = RegionMinWidth;
+            Expand_Down(e.VerticalChange);
+            Expand_Right(e.HorizontalChange);
         }
+
+        private void Expand_Up(double VerticalChange)
+        {
+            // Change only when it makes sense
+            if (ItemHeight - VerticalChange < RegionMinHeight)
+                return;
+
+            double old_y = Y;
+            Y = old_y + VerticalChange;
+
+            double vertical_change = Y - old_y;
+
+            ItemHeight = ItemHeight + vertical_change * -1;
+        }
+
+        private void Expand_Down(double VerticalChange)
+        {
+            // Change only when it makes sense
+            if (ItemHeight + VerticalChange < RegionMinHeight)
+            {
+                ItemHeight = RegionMinHeight;
+                return;
+            }
+
+            ItemHeight = ItemHeight + VerticalChange;
+        }
+
+        private void Expand_Left(double HorizontalChange)
+        {
+            // Change only when it makes sense
+            if (ItemWidth - HorizontalChange < RegionMinWidth)
+                return;
+
+            double old_x = X;
+            X = old_x + HorizontalChange;
+
+            double horizontal_change = X - old_x;
+
+            ItemWidth = ItemWidth + horizontal_change * -1;
+
+        }
+
+        private void Expand_Right(double HorizontalChange)
+        {
+            // Change only when it makes sense
+            if (ItemWidth + HorizontalChange < RegionMinWidth)
+            {
+                ItemWidth = RegionMinWidth;
+                return;
+            }
+
+            ItemWidth = ItemWidth + HorizontalChange;
+        }
+
 
         private void Center_DragDelta(object sender, DragDeltaEventArgs e)
         {
@@ -125,7 +143,9 @@ namespace DolphinDynamicInputTextureCreator.Controls
             Y = Y + e.VerticalChange;
         }
 
-        private static double RegionMinWidth = 5.0;
-        private static double RegionMinHeight = 5.0;
+
+
+        private static double RegionMinWidth = 16.0;
+        private static double RegionMinHeight = 16.0;
     }
 }
