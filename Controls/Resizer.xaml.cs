@@ -90,11 +90,14 @@ namespace DolphinDynamicInputTextureCreator.Controls
                 return;
 
             double old_y = Y;
-            Y = old_y + VerticalChange;
 
-            double vertical_change = Y - old_y;
+            //it wa the easiest way...
+            double old_Height = ItemHeight;
+            ItemHeight -= VerticalChange;
 
-            ItemHeight = ItemHeight + vertical_change * -1;
+            Y += VerticalChange;
+
+            ItemHeight = old_Height - (Y - old_y);
         }
 
         private void Expand_Down(double VerticalChange)
@@ -116,12 +119,14 @@ namespace DolphinDynamicInputTextureCreator.Controls
                 return;
 
             double old_x = X;
-            X = old_x + HorizontalChange;
 
-            double horizontal_change = X - old_x;
+            //it wa the easiest way...
+            double old_width = ItemWidth;
+            ItemWidth -= HorizontalChange;
 
-            ItemWidth = ItemWidth + horizontal_change * -1;
+            X += HorizontalChange;
 
+            ItemWidth = old_width - (X - old_x);
         }
 
         private void Expand_Right(double HorizontalChange)
