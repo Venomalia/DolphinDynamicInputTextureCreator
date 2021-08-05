@@ -1,7 +1,11 @@
-﻿namespace DolphinDynamicInputTextureCreator.Data
+﻿using System;
+
+namespace DolphinDynamicInputTextureCreator.Data
 {
     public class RectRegion : Other.PropertyChangedBase
     {
+        public static int DecimalPlaces { get; set; } = 0;
+
         private EmulatedDevice _emulated_device;
         public EmulatedDevice Device
         {
@@ -60,7 +64,7 @@
             get { return _x; }
             set
             {
-                _x = value;
+                _x = Math.Round(value, DecimalPlaces);
                 if (_x < 0)
                     _x = 0;
 
@@ -81,7 +85,7 @@
             get { return _y; }
             set
             {
-                _y = value;
+                _y = Math.Round(value, DecimalPlaces);
                 if (_y < 0)
                     _y = 0;
 
@@ -102,7 +106,7 @@
             get { return _height; }
             set
             {
-                _height = value;
+                _height = Math.Round(value, DecimalPlaces);
                 if (OwnedTexture != null)
                 {
                     if ((_height + Y) > OwnedTexture.ImageHeight)
@@ -121,7 +125,7 @@
             get { return _width; }
             set
             {
-                _width = value;
+                _width = Math.Round(value, DecimalPlaces);
                 if (OwnedTexture != null)
                 {
                     if ((_width + X) > OwnedTexture.ImageWidth)
