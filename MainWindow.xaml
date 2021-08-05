@@ -38,7 +38,6 @@
                 <RowDefinition Height="*"/>
             </Grid.RowDefinitions>
             <StackPanel Orientation="Horizontal" Grid.Row="0">
-                <Label Content="Choose an emulated control to map in the texture:" Margin="0 0 5 0" />
                 <ComboBox ItemsSource="{Binding EmulatedDevices}" Margin="0 0 0 0" Width="100" x:Name="EmulatedDeviceCB" SelectedValue="{Binding SelectedRegionBrush.SelectedEmulatedDevice}" VerticalAlignment="Center">
                     <ComboBox.ItemTemplate>
                         <DataTemplate>
