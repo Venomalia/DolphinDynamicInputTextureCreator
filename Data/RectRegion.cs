@@ -94,7 +94,7 @@ namespace DolphinDynamicInputTextureCreator.Data
                 if (OwnedTexture != null)
                 {
                     if (_y + Height > OwnedTexture.ImageWidth)
-                        _y = OwnedTexture.ImageWidth - Height;
+                        _y = OwnedTexture.ImageHeight - Height;
                 }
 
                 OnPropertyChanged(nameof(Y));
