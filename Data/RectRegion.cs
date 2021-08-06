@@ -5,6 +5,8 @@ namespace DolphinDynamicInputTextureCreator.Data
     public class RectRegion : Other.PropertyChangedBase
     {
         public static int DecimalPlaces { get; set; } = 0;
+        public static int GridHeight { get; set; } = 1;
+        public static int GridWidth { get; set; } = 1;
 
         private EmulatedDevice _emulated_device;
         public EmulatedDevice Device
@@ -64,7 +66,7 @@ namespace DolphinDynamicInputTextureCreator.Data
             get { return _x; }
             set
             {
-                _x = Math.Round(value, DecimalPlaces);
+                _x = Math.Round(value / GridWidth, DecimalPlaces) * GridWidth;
                 if (_x < 0)
                     _x = 0;
 
@@ -85,7 +87,7 @@ namespace DolphinDynamicInputTextureCreator.Data
             get { return _y; }
             set
             {
-                _y = Math.Round(value, DecimalPlaces);
+                _y = Math.Round(value / GridHeight, DecimalPlaces) * GridHeight;
                 if (_y < 0)
                     _y = 0;
 
@@ -106,7 +108,7 @@ namespace DolphinDynamicInputTextureCreator.Data
             get { return _height; }
             set
             {
-                _height = Math.Round(value, DecimalPlaces);
+                _height = Math.Round(value / GridHeight, DecimalPlaces) * GridHeight;
                 if (OwnedTexture != null)
                 {
                     if ((_height + Y) > OwnedTexture.ImageHeight)
@@ -125,7 +127,7 @@ namespace DolphinDynamicInputTextureCreator.Data
             get { return _width; }
             set
             {
-                _width = Math.Round(value, DecimalPlaces);
+                _width = Math.Round(value / GridWidth, DecimalPlaces) * GridWidth;
                 if (OwnedTexture != null)
                 {
                     if ((_width + X) > OwnedTexture.ImageWidth)
