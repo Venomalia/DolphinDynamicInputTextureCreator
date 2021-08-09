@@ -5,11 +5,17 @@ using System.Windows;
 
 namespace DolphinDynamicInputTextureCreator.Data
 {
+    /// <summary>Class <c>CanvasGrid</c> 
+    /// contains the logic for the grid.
+    /// </summary>
     public sealed class CanvasGrid : Other.PropertyChangedBase
     {
         private readonly double _max_width = 256;
         private readonly double _max_height = 256;
 
+        /// <summary>
+        /// specifies the start point X of the grid.
+        /// </summary>
         private double _x;
         public double X {
             get => _x;
@@ -23,11 +29,14 @@ namespace DolphinDynamicInputTextureCreator.Data
                     value = 0;
                 _x = value;
 
-                RectRegion.GridX = value;
+                RectRegion.Grid = this;
                 OnPropertyChanged(nameof(X));
             }
         }
 
+        /// <summary>
+        /// specifies the start point Y of the grid.
+        /// </summary>
         private double _y;
         public double Y {
             get => _y;
@@ -41,11 +50,14 @@ namespace DolphinDynamicInputTextureCreator.Data
                     value = 0;
                 _y = value;
 
-                RectRegion.GridY = value;
+                RectRegion.Grid = this;
                 OnPropertyChanged(nameof(Y));
             }
         }
 
+        /// <summary>
+        /// sindicates the width of the grid.
+        /// </summary>
         private double _width;
         public double Width
         {
@@ -60,11 +72,14 @@ namespace DolphinDynamicInputTextureCreator.Data
 
                 if (X >= value) X = value - 1;
 
-                RectRegion.GridWidth = value;
+                RectRegion.Grid = this;
                 OnPropertyChanged(nameof(Width));
             }
         }
 
+        /// <summary>
+        /// sindicates the height of the grid.
+        /// </summary>
         private double _height;
         public double Height
         {
@@ -79,11 +94,15 @@ namespace DolphinDynamicInputTextureCreator.Data
 
                 if (Y >= value) Y = value - 1;
 
-                RectRegion.GridHeight = value;
+                RectRegion.Grid = this;
                 OnPropertyChanged(nameof(Height));
             }
         }
 
+        /// <summary>
+        /// Base constructor.
+        /// </summary>
+        public CanvasGrid() { new CanvasGrid(0, 0, 1, 1);}
         public CanvasGrid(double x, double y, double width, double height)
         {
             Width = width;
@@ -92,11 +111,17 @@ namespace DolphinDynamicInputTextureCreator.Data
             Y = y;
         }
 
+        /// <summary>
+        /// implicit convertirung to rect.
+        /// </summary>
         public static implicit operator Rect(CanvasGrid v)
         {
             return new Rect(v.X, v.Y, v.Width, v.Height);
         }
 
+        /// <summary>
+        /// implicit conversion from rect.
+        /// </summary>
         public static implicit operator CanvasGrid(Rect v)
         {
             return new CanvasGrid(v.X, v.Y, v.Width, v.Height);
