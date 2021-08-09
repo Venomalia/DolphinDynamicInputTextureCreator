@@ -102,7 +102,6 @@ namespace DolphinDynamicInputTextureCreator.Data
         /// <summary>
         /// Base constructor.
         /// </summary>
-        public CanvasGrid() { new CanvasGrid(0, 0, 1, 1);}
         public CanvasGrid(double x, double y, double width, double height)
         {
             Width = width;
