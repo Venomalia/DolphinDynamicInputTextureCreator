@@ -29,7 +29,7 @@ namespace DolphinDynamicInputTextureCreator.Data
                     value = 0;
                 _x = value;
 
-                RectRegion.Grid = this;
+                OnPropertyChanged(nameof(CanvasGrid));
                 OnPropertyChanged(nameof(X));
             }
         }
@@ -50,7 +50,7 @@ namespace DolphinDynamicInputTextureCreator.Data
                     value = 0;
                 _y = value;
 
-                RectRegion.Grid = this;
+                OnPropertyChanged(nameof(CanvasGrid));
                 OnPropertyChanged(nameof(Y));
             }
         }
@@ -72,7 +72,7 @@ namespace DolphinDynamicInputTextureCreator.Data
 
                 if (X >= value) X = value - 1;
 
-                RectRegion.Grid = this;
+                OnPropertyChanged(nameof(CanvasGrid));
                 OnPropertyChanged(nameof(Width));
             }
         }
@@ -94,7 +94,7 @@ namespace DolphinDynamicInputTextureCreator.Data
 
                 if (Y >= value) Y = value - 1;
 
-                RectRegion.Grid = this;
+                OnPropertyChanged(nameof(CanvasGrid));
                 OnPropertyChanged(nameof(Height));
             }
         }

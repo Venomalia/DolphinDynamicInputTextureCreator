@@ -68,17 +68,31 @@ namespace DolphinDynamicInputTextureCreator.Data
         /// <summary>
         /// Canvas grid.
         /// </summary>
-        private CanvasGrid _grid = new CanvasGrid(0,0,1,1);
+        private CanvasGrid _grid;
         public CanvasGrid Grid
         {
-            get { return _grid; }
+            get 
+            {
+                if (_grid == null)
+                    Grid = new CanvasGrid(0, 0, 1, 1);
+                return _grid; 
+            }
             set
             {
                 _grid = value;
+                _grid.PropertyChanged += new System.ComponentModel.PropertyChangedEventHandler(UpdateCanvasGrid);
                 OnPropertyChanged(nameof(Grid));
             }
         }
 
+        private void UpdateCanvasGrid(object sender, System.ComponentModel.PropertyChangedEventArgs e)
+        {
+            if (e.PropertyName == nameof(CanvasGrid))
+            {
+                OnPropertyChanged(nameof(Grid));
+                RectRegion.Grid = _grid;
+            }
+        }
         #endregion
     }
 }
