@@ -1,7 +1,16 @@
-﻿namespace DolphinDynamicInputTextureCreator.Data
+﻿using System;
+
+namespace DolphinDynamicInputTextureCreator.Data
 {
     public class RectRegion : Other.PropertyChangedBase
     {
+
+        /// <summary>
+        /// this determines the sub pixel value, 0 uses only full pixels.
+        /// </summary>
+        public static int DecimalPlaces { get; set; } = 0;
+        public static CanvasGrid Grid { get;  set; }
+
         private EmulatedDevice _emulated_device;
         public EmulatedDevice Device
         {
@@ -60,9 +69,20 @@
             get { return _x; }
             set
             {
-                _x = value;
+                if (Grid.Width > 1 & DecimalPlaces == 0)
+                    value = Math.Round(value / Grid.Width, MidpointRounding.ToZero) * Grid.Width;
+                value += Grid.X;
+                _x = Math.Round(value, DecimalPlaces);
+
                 if (_x < 0)
                     _x = 0;
+
+                if (OwnedTexture != null)
+                {
+                    if (_x + Width > OwnedTexture.ImageWidth)
+                        _x = OwnedTexture.ImageWidth - Width;
+                }
+
                 OnPropertyChanged(nameof(X));
                 OnPropertyChanged(nameof(ScaledX));
             }
@@ -74,9 +94,20 @@
             get { return _y; }
             set
             {
-                _y = value;
+                if (Grid.Height > 1 & DecimalPlaces == 0)
+                    value = Math.Round(value / Grid.Height, MidpointRounding.ToZero) * Grid.Height;
+                value += Grid.Y;
+                _y = Math.Round(value, DecimalPlaces);
+
                 if (_y < 0)
                     _y = 0;
+
+                if (OwnedTexture != null)
+                {
+                    if (_y + Height > OwnedTexture.ImageHeight)
+                        _y = OwnedTexture.ImageHeight - Height;
+                }
+
                 OnPropertyChanged(nameof(Y));
                 OnPropertyChanged(nameof(ScaledY));
             }
@@ -88,13 +119,17 @@
             get { return _height; }
             set
             {
-                _height = value;
+                if (Grid.Height > 1)
+                    value = Math.Round(value / Grid.Height, MidpointRounding.ToEven) * Grid.Height;
+
+                _height = Math.Round(value, DecimalPlaces);
+
                 if (OwnedTexture != null)
                 {
                     if ((_height + Y) > OwnedTexture.ImageHeight)
                         _height = OwnedTexture.ImageHeight - Y;
                 }
-                if (_height < 0)
+                if (_height < 0.1)
                     _height = 1;
                 OnPropertyChanged(nameof(Height));
                 OnPropertyChanged(nameof(ScaledHeight));
@@ -107,13 +142,16 @@
             get { return _width; }
             set
             {
-                _width = value;
+                if (Grid.Width > 1)
+                    value = Math.Round(value / Grid.Width, MidpointRounding.ToEven) * Grid.Width;
+                _width = Math.Round(value, DecimalPlaces);
+
                 if (OwnedTexture != null)
                 {
                     if ((_width + X) > OwnedTexture.ImageWidth)
                         _width = OwnedTexture.ImageWidth - X;
                 }
-                if (_width < 0)
+                if (_width < 0.1)
                     _width = 1;
                 OnPropertyChanged(nameof(Width));
                 OnPropertyChanged(nameof(ScaledWidth));

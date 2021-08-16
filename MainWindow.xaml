@@ -28,6 +28,10 @@
                 <MenuItem Header="_Emulated Devices..." Name="EditEmulatedDevices" Click="EditEmulatedDevices_Click"  />
                 <MenuItem Header="_Host Devices..." Name="EditHostDevices" Click="EditHostDevices_Click"   />
             </MenuItem>
+            <MenuItem Header="_Canvas" >
+                <MenuItem Header="_Fill texture?" IsChecked="{Binding SelectedRegionBrush.FillRegion}" IsCheckable="True" />
+                <MenuItem Header="_Use subpixel?" IsChecked="{Binding SelectedRegionBrush.Subpixel}" IsCheckable="True" />
+            </MenuItem>
         </Menu>
         <Grid DockPanel.Dock="Left" MinWidth="200">
             <controls:TexturePicker></controls:TexturePicker>
@@ -88,6 +92,14 @@
                     </ComboBox.Style>
                 </ComboBox>
                 <CheckBox Margin="5 0 5 0" Content="Fill texture?" IsChecked="{Binding SelectedRegionBrush.FillRegion}" VerticalAlignment="Center" />
+                <Label Content="Grid:" Margin="5 0 5 0" />
+                <TextBox Text="{Binding SelectedRegionBrush.Grid.X , UpdateSourceTrigger=PropertyChanged, Delay=200}" Margin="0" AcceptsTab="True" Width="25" Height="20" TextAlignment="Center" />
+                <Label Content="," Margin="1,0" />
+                <TextBox Text="{Binding SelectedRegionBrush.Grid.Y , UpdateSourceTrigger=PropertyChanged, Delay=200}" Margin="0,0,10,0" AcceptsTab="True" Width="25" Height="20" TextAlignment="Center" />
+                <TextBox Text="{Binding SelectedRegionBrush.Grid.Width , UpdateSourceTrigger=PropertyChanged, Delay=800}" Margin="0" AcceptsTab="True" Width="25" Height="20" TextAlignment="Center" />
+                <Label Content="x" Margin="0" />
+                <TextBox Text="{Binding SelectedRegionBrush.Grid.Height , UpdateSourceTrigger=PropertyChanged, Delay=800}" Margin="0" AcceptsTab="True" Width="25" Height="20" TextAlignment="Center" />
+                
             </StackPanel>
             <controls:PanZoom x:Name="PanZoom" Grid.Row="1"></controls:PanZoom>
         </Grid>

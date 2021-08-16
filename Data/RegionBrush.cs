@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
+using System.Windows;
 
 namespace DolphinDynamicInputTextureCreator.Data
 {
@@ -46,6 +47,50 @@ namespace DolphinDynamicInputTextureCreator.Data
             {
                 _fill_region = value;
                 OnPropertyChanged(nameof(FillRegion));
+            }
+        }
+
+        /// <summary>
+        /// whether subpixels are used.
+        /// </summary>
+        private bool _subpixel;
+        public bool Subpixel
+        {
+            get { return _subpixel; }
+            set
+            {
+                _subpixel = value;
+                RectRegion.DecimalPlaces = value ? 1 : 0;
+                OnPropertyChanged(nameof(Subpixel));
+            }
+        }
+
+        /// <summary>
+        /// Canvas grid.
+        /// </summary>
+        private CanvasGrid _grid;
+        public CanvasGrid Grid
+        {
+            get 
+            {
+                if (_grid == null)
+                    Grid = new CanvasGrid(0, 0, 1, 1);
+                return _grid; 
+            }
+            set
+            {
+                _grid = value;
+                _grid.PropertyChanged += new System.ComponentModel.PropertyChangedEventHandler(UpdateCanvasGrid);
+                OnPropertyChanged(nameof(Grid));
+            }
+        }
+
+        private void UpdateCanvasGrid(object sender, System.ComponentModel.PropertyChangedEventArgs e)
+        {
+            if (e.PropertyName == nameof(CanvasGrid))
+            {
+                OnPropertyChanged(nameof(Grid));
+                RectRegion.Grid = _grid;
             }
         }
         #endregion
