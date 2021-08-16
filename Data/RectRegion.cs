@@ -9,6 +9,7 @@ namespace DolphinDynamicInputTextureCreator.Data
         /// this determines the sub pixel value, 0 uses only full pixels.
         /// </summary>
         public static int DecimalPlaces { get; set; } = 0;
+        public static CanvasGrid Grid { get;  set; }
 
         private EmulatedDevice _emulated_device;
         public EmulatedDevice Device
@@ -68,7 +69,11 @@ namespace DolphinDynamicInputTextureCreator.Data
             get { return _x; }
             set
             {
+                if (Grid.Width > 1 & DecimalPlaces == 0)
+                    value = Math.Round(value / Grid.Width, MidpointRounding.ToZero) * Grid.Width;
+                value += Grid.X;
                 _x = Math.Round(value, DecimalPlaces);
+
                 if (_x < 0)
                     _x = 0;
 
@@ -89,7 +94,11 @@ namespace DolphinDynamicInputTextureCreator.Data
             get { return _y; }
             set
             {
+                if (Grid.Height > 1 & DecimalPlaces == 0)
+                    value = Math.Round(value / Grid.Height, MidpointRounding.ToZero) * Grid.Height;
+                value += Grid.Y;
                 _y = Math.Round(value, DecimalPlaces);
+
                 if (_y < 0)
                     _y = 0;
 
@@ -110,7 +119,11 @@ namespace DolphinDynamicInputTextureCreator.Data
             get { return _height; }
             set
             {
+                if (Grid.Height > 1)
+                    value = Math.Round(value / Grid.Height, MidpointRounding.ToEven) * Grid.Height;
+
                 _height = Math.Round(value, DecimalPlaces);
+
                 if (OwnedTexture != null)
                 {
                     if ((_height + Y) > OwnedTexture.ImageHeight)
@@ -129,7 +142,10 @@ namespace DolphinDynamicInputTextureCreator.Data
             get { return _width; }
             set
             {
+                if (Grid.Width > 1)
+                    value = Math.Round(value / Grid.Width, MidpointRounding.ToEven) * Grid.Width;
                 _width = Math.Round(value, DecimalPlaces);
+
                 if (OwnedTexture != null)
                 {
                     if ((_width + X) > OwnedTexture.ImageWidth)
