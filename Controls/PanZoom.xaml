@@ -11,6 +11,7 @@
     <UserControl.Resources>
         <converters:ScaleFactorToPercentageValueConverter x:Key="ScaleFactorToPercentageValueConverter"/>
         <converters:PathToImageValueConverter x:Key="PathToImageValueConverter"/>
+        <converters:CanvasGridToViewport x:Key="CanvasGridToViewport"/>
         <BooleanToVisibilityConverter x:Key="BoolToVis" />
         <ContextMenu x:Key="ItemContextMenu">
             <MenuItem Header="Delete" Command="{Binding RelativeSource={RelativeSource AncestorType={x:Type controls:PanZoom}},
@@ -96,7 +97,7 @@
                     <Grid>
                         <Grid VerticalAlignment="Top" HorizontalAlignment="Left">
                             <Grid.Background>
-                                <DrawingBrush TileMode="Tile" Viewport="0,0,2,2" 
+                                <DrawingBrush x:Name="Canvas" TileMode="Tile" Viewport="{Binding InputPack.SelectedRegionBrush.Grid, Mode=OneWay, UpdateSourceTrigger=PropertyChanged, Converter={StaticResource CanvasGridToViewport}}"
                                       ViewportUnits="Absolute">
                                     <DrawingBrush.Drawing>
                                         <DrawingGroup>
