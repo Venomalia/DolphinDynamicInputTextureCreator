@@ -10,8 +10,8 @@ namespace DolphinDynamicInputTextureCreator.Data
     /// </summary>
     public sealed class CanvasGrid : Other.PropertyChangedBase
     {
-        private readonly double _max_width = 256;
-        private readonly double _max_height = 256;
+        private readonly double _max_width = 128;
+        private readonly double _max_height = 128;
 
         /// <summary>
         /// specifies the start point X of the grid.
@@ -65,7 +65,7 @@ namespace DolphinDynamicInputTextureCreator.Data
             set
             {
                 if (value > _max_width)
-                    value = _max_width;
+                    value = _get_max(value, _max_width);
                 if (value < 1)
                     value = 1;
                 _width = value;
@@ -87,7 +87,7 @@ namespace DolphinDynamicInputTextureCreator.Data
             set
             {
                 if (value > _max_height)
-                    value = _max_height;
+                    value = _get_max(value, _max_height);
                 if (value < 1)
                     value = 1;
                 _height = value;
@@ -97,6 +97,26 @@ namespace DolphinDynamicInputTextureCreator.Data
                 OnPropertyChanged(nameof(CanvasGrid));
                 OnPropertyChanged(nameof(Height));
             }
+        }
+
+        /// <summary>
+        /// Converts oversized values to smaller ones, if possible.
+        /// </summary>
+        private double _get_max(double input, double max)
+        {
+            int n = 2;
+            for (int i = 2; i < 50; i++)
+            {
+                if (input % n == 0)
+                {
+                    input /= n;
+                    if (input > max)
+                        input = _get_max(input, max);
+                    break;
+                }
+                n = 2 * i - 1;
+            }
+            return input;
         }
 
         /// <summary>
