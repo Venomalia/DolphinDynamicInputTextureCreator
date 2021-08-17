@@ -123,10 +123,6 @@ namespace DolphinDynamicInputTextureCreator.Data
             get { return _height; }
             set
             {
-
-                if (value < Grid.Height)
-                    value = Grid.Height;
-
                 if (OwnedTexture != null && value + Y <= OwnedTexture.ImageHeight)
                 {
                     if (Y == 0 & Grid.Y != 0)
