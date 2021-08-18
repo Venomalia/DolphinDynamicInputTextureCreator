@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Windows;
 
 namespace DolphinDynamicInputTextureCreator.Data
 {
@@ -222,5 +223,22 @@ namespace DolphinDynamicInputTextureCreator.Data
                 Height = value / ScaleFactor;
             }
         }
+
+        /// <summary>
+        /// implicit convertirung to rect.
+        /// </summary>
+        public static implicit operator Rect(RectRegion v)
+        {
+            return new Rect(v.X, v.Y, v.Width, v.Height);
+        }
+
+        /// <summary>
+        /// implicit conversion from rect.
+        /// </summary>
+        public static implicit operator RectRegion(Rect v)
+        {
+            return new RectRegion() { X = v.X, Y = v.Y, Width = v.Width, Height = v.Height };
+        }
+
     }
 }
