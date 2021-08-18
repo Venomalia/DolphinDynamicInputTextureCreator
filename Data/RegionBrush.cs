@@ -1,7 +1,10 @@
-﻿using System;
+﻿using DolphinDynamicInputTextureCreator.Other;
+using System;
 using System.Collections.Generic;
 using System.Text;
+using System.Text.Json.Serialization;
 using System.Windows;
+using System.Windows.Input;
 
 namespace DolphinDynamicInputTextureCreator.Data
 {
@@ -92,6 +95,28 @@ namespace DolphinDynamicInputTextureCreator.Data
                 OnPropertyChanged(nameof(Grid));
                 RectRegion.Grid = _grid;
             }
+        }
+
+        /// <summary>
+        /// sets the current RectRegion to the grid.
+        /// </summary>
+        private ICommand _set_grid_command;
+        [JsonIgnore]
+        public ICommand SetGridCommand
+        {
+            get
+            {
+                if (_set_grid_command == null)
+                {
+                    _set_grid_command = new RelayCommand(param => SetGrid((RectRegion)param));
+                }
+                return _set_grid_command;
+            }
+        }
+
+        private void SetGrid(RectRegion region)
+        {
+            Grid = (Rect)region;
         }
         #endregion
     }
