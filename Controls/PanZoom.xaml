@@ -16,6 +16,9 @@
         <ContextMenu x:Key="ItemContextMenu">
             <MenuItem Header="Delete" Command="{Binding RelativeSource={RelativeSource AncestorType={x:Type controls:PanZoom}},
                                               Path=DataContext.InputPack.EditingTexture.DeleteRegionCommand}" CommandParameter="{Binding}" />
+
+            <MenuItem Header="Set as grid" Command="{Binding RelativeSource={RelativeSource AncestorType={x:Type controls:PanZoom}},
+                                              Path=DataContext.InputPack.SelectedRegionBrush.SetGridCommand}" CommandParameter="{Binding}" />
         </ContextMenu>
         <DataTemplate DataType="{x:Type data:RectRegion}">
             <Grid>
