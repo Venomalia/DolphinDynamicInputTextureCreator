@@ -223,11 +223,38 @@ namespace DolphinDynamicInputTextureCreator.Data
 
         private void AddKey(object obj)
         {
+            string name = nextname();
+
             EmulatedKeys.Add(
                 new EmulatedKey
                 {
-                    Name = ""
+                    Name = name
                 });
+        }
+
+        /// <summary>
+        /// Search for a key name that is not in use.
+        /// </summary>
+        private string nextname()
+        {
+            foreach (string suggestions in SearchSuggestions)
+            {
+                if (EmulatedKeys.Count == 0)
+                    return suggestions;
+
+                foreach (EmulatedKey key in EmulatedKeys)
+                {
+                    if (key.Name == suggestions)
+                    {
+                        break;
+                    }
+                    if (EmulatedKeys.IndexOf(key)+1 == EmulatedKeys.Count)
+                    {
+                        return suggestions;
+                    }
+                }
+            }
+            return "";
         }
         #endregion
     }
