@@ -85,7 +85,7 @@ namespace DolphinDynamicInputTextureCreator.ViewModels
                     p.Y > r.ScaledY && p.Y < (r.Y + r.ScaledHeight))
                 {
                     _currently_creating_region = null;
-                    return;
+                    //return; fixes the problem that no regions can be created if one exists at 0x0
                 }
             }
 
