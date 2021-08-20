@@ -94,6 +94,11 @@ namespace DolphinDynamicInputTextureCreator.Controls
                 {
                     ViewModel.InputPack.EditingTexture.ScaleFactor /= 1.1;
                 }
+                // Smooth zoom values.
+                int place = 1;
+                if (ViewModel.InputPack.EditingTexture.ScaleFactor > 10) place = 0;
+                if (ViewModel.InputPack.EditingTexture.ScaleFactor < 1) place = 2;
+                ViewModel.InputPack.EditingTexture.ScaleFactor = Math.Round(ViewModel.InputPack.EditingTexture.ScaleFactor, place);
             }
             // Mouse wheel + Shift = horizontal scrolling
             if (Keyboard.IsKeyDown(Key.LeftShift))
