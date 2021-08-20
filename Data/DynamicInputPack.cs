@@ -206,6 +206,17 @@ namespace DolphinDynamicInputTextureCreator.Data
 
         private void EditTexture(DynamicInputTexture texture)
         {
+            //Automatically select suitable zoom.
+            if (texture.ScaleFactor == 1)
+            {
+                double scale = (texture.ImageHeight + texture.ImageWidth) / 2;
+                texture.ScaleFactor = 600 / scale;
+                if (texture.ScaleFactor > 1)
+                {
+                    texture.ScaleFactor = Math.Round(texture.ScaleFactor);
+                }
+            }
+            //sets selected texture.
             EditingTexture = texture;
         }
         #endregion
