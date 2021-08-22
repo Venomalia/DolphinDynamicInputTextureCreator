@@ -29,7 +29,6 @@
                 <MenuItem Header="_Host Devices..." Name="EditHostDevices" Click="EditHostDevices_Click"   />
             </MenuItem>
             <MenuItem Header="_Canvas" >
-                <MenuItem Header="_Fill texture?" IsChecked="{Binding SelectedRegionBrush.FillRegion}" IsCheckable="True" />
                 <MenuItem Header="_Use subpixel?" IsChecked="{Binding SelectedRegionBrush.Subpixel}" IsCheckable="True" />
             </MenuItem>
         </Menu>
