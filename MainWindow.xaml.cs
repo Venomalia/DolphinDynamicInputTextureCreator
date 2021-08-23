@@ -195,5 +195,10 @@ namespace DolphinDynamicInputTextureCreator
                 _edit_host_devices_window.Content = user_control;
             }
         }
+
+        private void ButtonFill_Click(object sender, RoutedEventArgs e)
+        {
+            PanZoom.ViewModel.FillRegion();
+        }
     }
 }

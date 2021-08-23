@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Windows;
 
 namespace DolphinDynamicInputTextureCreator.Data
 {
@@ -69,9 +70,11 @@ namespace DolphinDynamicInputTextureCreator.Data
             get { return _x; }
             set
             {
-                if (Grid.Width > 1 & DecimalPlaces == 0)
-                    value = Math.Round(value / Grid.Width, MidpointRounding.ToNegativeInfinity) * Grid.Width;
-                value += Grid.X;
+                if (Grid.Width > 1 & DecimalPlaces == 0 & value > 0.6)
+                {
+                    value = Math.Round(value / Grid.Width, MidpointRounding.ToZero) * Grid.Width;
+                    value += Grid.X;
+                }
                 _x = Math.Round(value, DecimalPlaces);
 
                 if (_x < 0)
@@ -94,9 +97,11 @@ namespace DolphinDynamicInputTextureCreator.Data
             get { return _y; }
             set
             {
-                if (Grid.Height > 1 & DecimalPlaces == 0)
-                    value = Math.Round(value / Grid.Height, MidpointRounding.ToNegativeInfinity) * Grid.Height;
-                value += Grid.Y;
+                if (Grid.Height > 1 & DecimalPlaces == 0 & value > 0.6)
+                {
+                    value = Math.Round(value / Grid.Height, MidpointRounding.ToZero) * Grid.Height;
+                    value += Grid.Y;
+                }
                 _y = Math.Round(value, DecimalPlaces);
 
                 if (_y < 0)
@@ -119,24 +124,25 @@ namespace DolphinDynamicInputTextureCreator.Data
             get { return _height; }
             set
             {
-                if (Y == 0 & Grid.Y != 0)
-                    value += Grid.Y;
+                if (OwnedTexture != null && value + Y <= OwnedTexture.ImageHeight)
+                {
+                    if (Y == 0 & Grid.Y != 0)
+                        value += Grid.Y;
 
-                if (Grid.Height > 1)
-                    value = Math.Round(value / Grid.Height, MidpointRounding.ToEven) * Grid.Height;
+                    if (Grid.Height > 1)
+                        value = Math.Round(value / Grid.Height, MidpointRounding.ToEven) * Grid.Height;
 
-                if (Y == 0 & Grid.Y != 0)
-                    value -= Grid.Height - Grid.Y;
-
+                    if (Y == 0 & Grid.Y != 0)
+                        value -= Grid.Height - Grid.Y;
+                }
                 _height = Math.Round(value, DecimalPlaces);
 
-                if (OwnedTexture != null)
-                {
-                    if ((_height + Y) > OwnedTexture.ImageHeight)
-                        _height = OwnedTexture.ImageHeight - Y;
-                }
+                if (OwnedTexture != null && _height + Y > OwnedTexture.ImageHeight)
+                    _height = OwnedTexture.ImageHeight - Y;
+
                 if (_height < 0.1)
                     _height = 1;
+
                 OnPropertyChanged(nameof(Height));
                 OnPropertyChanged(nameof(ScaledHeight));
             }
@@ -148,24 +154,25 @@ namespace DolphinDynamicInputTextureCreator.Data
             get { return _width; }
             set
             {
-                if (X == 0 & Grid.X != 0)
-                    value += Grid.X;
+                if (OwnedTexture != null && value + X <= OwnedTexture.ImageWidth)
+                {
+                    if (X == 0 & Grid.X != 0)
+                        value += Grid.X;
 
-                if (Grid.Width > 1)
-                    value = Math.Round(value / Grid.Width, MidpointRounding.ToEven) * Grid.Width;
+                    if (Grid.Width > 1)
+                        value = Math.Round(value / Grid.Width, MidpointRounding.ToEven) * Grid.Width;
 
-                if (X == 0 & Grid.X != 0)
-                    value -= Grid.Width - Grid.X;
-
+                    if (X == 0 & Grid.X != 0)
+                        value -= Grid.Width - Grid.X;
+                }
                 _width = Math.Round(value, DecimalPlaces);
 
-                if (OwnedTexture != null)
-                {
-                    if ((_width + X) > OwnedTexture.ImageWidth)
-                        _width = OwnedTexture.ImageWidth - X;
-                }
+                if (OwnedTexture != null && _width + X > OwnedTexture.ImageWidth)
+                    _width = OwnedTexture.ImageWidth - X;
+
                 if (_width < 0.1)
                     _width = 1;
+
                 OnPropertyChanged(nameof(Width));
                 OnPropertyChanged(nameof(ScaledWidth));
             }
@@ -216,5 +223,22 @@ namespace DolphinDynamicInputTextureCreator.Data
                 Height = value / ScaleFactor;
             }
         }
+
+        /// <summary>
+        /// implicit convertirung to rect.
+        /// </summary>
+        public static implicit operator Rect(RectRegion v)
+        {
+            return new Rect(v.X, v.Y, v.Width, v.Height);
+        }
+
+        /// <summary>
+        /// implicit conversion from rect.
+        /// </summary>
+        public static implicit operator RectRegion(Rect v)
+        {
+            return new RectRegion() { X = v.X, Y = v.Y, Width = v.Width, Height = v.Height };
+        }
+
     }
 }

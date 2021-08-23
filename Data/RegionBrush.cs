@@ -1,7 +1,10 @@
-﻿using System;
+﻿using DolphinDynamicInputTextureCreator.Other;
+using System;
 using System.Collections.Generic;
 using System.Text;
+using System.Text.Json.Serialization;
 using System.Windows;
+using System.Windows.Input;
 
 namespace DolphinDynamicInputTextureCreator.Data
 {
@@ -33,20 +36,6 @@ namespace DolphinDynamicInputTextureCreator.Data
             {
                 _selected_emulated_key = value;
                 OnPropertyChanged(nameof(SelectedEmulatedKey));
-            }
-        }
-
-        /// <summary>
-        /// Whether to fill the entire image with the region
-        /// </summary>
-        private bool _fill_region;
-        public bool FillRegion
-        {
-            get { return _fill_region; }
-            set
-            {
-                _fill_region = value;
-                OnPropertyChanged(nameof(FillRegion));
             }
         }
 
@@ -92,6 +81,28 @@ namespace DolphinDynamicInputTextureCreator.Data
                 OnPropertyChanged(nameof(Grid));
                 RectRegion.Grid = _grid;
             }
+        }
+
+        /// <summary>
+        /// sets the current RectRegion to the grid.
+        /// </summary>
+        private ICommand _set_grid_command;
+        [JsonIgnore]
+        public ICommand SetGridCommand
+        {
+            get
+            {
+                if (_set_grid_command == null)
+                {
+                    _set_grid_command = new RelayCommand(param => SetGrid((RectRegion)param));
+                }
+                return _set_grid_command;
+            }
+        }
+
+        private void SetGrid(RectRegion region)
+        {
+            Grid = (Rect)region;
         }
         #endregion
     }
