@@ -92,7 +92,6 @@
                     </ComboBox.Style>
                 </ComboBox>
                 <Button Margin="5,0,5,0" MinWidth="35" Content="Fill Region" VerticalAlignment="Center" Click="ButtonFill_Click"/>
-                <CheckBox Margin="5 0 5 0" Content="Use subpixel?" IsChecked="{Binding SelectedRegionBrush.Subpixel}" VerticalAlignment="Center" />
                 <Label Content="Grid:" Margin="5 0 5 0" />
                 <TextBox Text="{Binding SelectedRegionBrush.Grid.X , UpdateSourceTrigger=PropertyChanged, Delay=200}" Margin="0" AcceptsTab="True" Width="25" Height="20" TextAlignment="Center" />
                 <Label Content="," Margin="1,0" />
