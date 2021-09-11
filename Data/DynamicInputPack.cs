@@ -757,8 +757,15 @@ namespace DolphinDynamicInputTextureCreator.Data
 
         private string GetHostDeviceKeyTextureLocation(string root_location, HostDevice device, HostKey key)
         {
-            string device_location = Path.Combine(root_location, device.Name.Replace("/", "_"));
-            return Path.Combine(device_location, Path.GetFileName(key.TexturePath));
+            if (key.RelativeTexturePath == null)
+            {
+                string device_location = Path.Combine(root_location, device.Name.Replace("/", "_"));
+                return Path.Combine(device_location, Path.GetFileName(key.TexturePath));
+            }
+            else
+            {
+                return Path.Combine(root_location, key.RelativeTexturePath);
+            }
         }
         #endregion
 
@@ -776,9 +783,19 @@ namespace DolphinDynamicInputTextureCreator.Data
 
         private void WriteImages(string location)
         {
+            //exports the images for the default_host_controls
+            WriteHostImages(location, HostDevices);
+
+            //exports the images for the output_textures
             foreach (DynamicInputTexture texture in _textures)
             {
                 string destImagePath = Path.Combine(location, GetImageName(texture.TexturePath));
+
+                //exports the images for the default host_controls
+                if (texture.HostDevices.Count != 0)
+                {
+                    WriteHostImages(location, texture.HostDevices);
+                }
 
                 // Unlikely that we get here but skip textures that don't exist
                 if (!File.Exists(texture.TexturePath))
@@ -795,17 +812,28 @@ namespace DolphinDynamicInputTextureCreator.Data
                 const bool overwrite = true;
                 File.Copy(texture.TexturePath, destImagePath, overwrite);
             }
+        }
 
-            foreach (var device in _host_devices)
+        private void WriteHostImages(string location, ObservableCollection<HostDevice> hostDevices)
+        {
+            foreach (var device in hostDevices)
             {
                 foreach (var key in device.HostKeys)
                 {
                     const bool overwrite = true;
                     var texture_location = GetHostDeviceKeyTextureLocation(location, device, key);
+
+                    // Prevents the file from trying to overwrite itself.
+                    if (texture_location == key.TexturePath)
+                    {
+                        continue;
+                    }
+
                     Directory.CreateDirectory(Path.GetDirectoryName(texture_location));
                     File.Copy(key.TexturePath, texture_location, overwrite);
                 }
             }
+
         }
 
         private void WriteHostControls(JsonWriter writer, ObservableCollection<HostDevice> hostDevices)
@@ -947,7 +975,8 @@ namespace DolphinDynamicInputTextureCreator.Data
                         {
                             HostKey key = new HostKey();
                             key.Name = reader.Value.ToString();
-                            key.TexturePath = Path.Combine(paht, reader.ReadAsString());
+                            key.RelativeTexturePath = reader.ReadAsString();
+                            key.TexturePath = Path.Combine(paht, key.RelativeTexturePath);
                             Device.HostKeys.Add(key);
                         }
                     }
