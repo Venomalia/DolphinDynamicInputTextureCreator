@@ -1,5 +1,6 @@
-﻿using System;
+using System;
 using System.Windows;
+﻿using Newtonsoft.Json;
 
 namespace DolphinDynamicInputTextureCreator.Data
 {
@@ -178,6 +179,7 @@ namespace DolphinDynamicInputTextureCreator.Data
             }
         }
 
+        [JsonIgnore]
         public double ScaledX
         {
             get
@@ -189,6 +191,8 @@ namespace DolphinDynamicInputTextureCreator.Data
                 X = value / ScaleFactor;
             }
         }
+
+        [JsonIgnore]
         public double ScaledY
         {
             get
@@ -200,6 +204,8 @@ namespace DolphinDynamicInputTextureCreator.Data
                 Y = value / ScaleFactor;
             }
         }
+
+        [JsonIgnore]
         public double ScaledWidth
         {
             get 
@@ -212,6 +218,7 @@ namespace DolphinDynamicInputTextureCreator.Data
             }
         }
 
+        [JsonIgnore]
         public double ScaledHeight
         {
             get
