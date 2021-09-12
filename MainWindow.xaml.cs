@@ -246,7 +246,7 @@ namespace DolphinDynamicInputTextureCreator
         private string GetNewImage(string name, string paht)
         {
             MessageBoxResult MessageResult;
-            MessageResult = MessageBox.Show(String.Format("The image of '{0}' could not be found!\n'{1}'\nsearch for the picture?", name, paht), name, MessageBoxButton.YesNo);
+            MessageResult = MessageBox.Show(String.Format("'{1}'\nThe image of '{0}' could not be found!\nsearch for the picture?", name, paht), name, MessageBoxButton.YesNo);
             if (MessageResult == MessageBoxResult.Yes)
             {
                 var dialog = new System.Windows.Forms.OpenFileDialog();
