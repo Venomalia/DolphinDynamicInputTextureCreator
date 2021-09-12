@@ -41,5 +41,22 @@ namespace DolphinDynamicInputTextureCreator.Data
                 OnPropertyChanged(nameof(TexturePath));
             }
         }
+
+        /// <summary>
+        /// if the export paht should not be calculated.
+        /// </summary>
+        private string _relative_texture_path;
+        public string RelativeTexturePath
+        {
+            get
+            {
+                return _relative_texture_path;
+            }
+            set
+            {
+                _relative_texture_path = value;
+                OnPropertyChanged(nameof(RelativeTexturePath));
+            }
+        }
     }
 }

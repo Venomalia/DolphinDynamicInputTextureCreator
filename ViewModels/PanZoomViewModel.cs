@@ -106,13 +106,14 @@ namespace DolphinDynamicInputTextureCreator.ViewModels
                 return;
             }
 
+            //prevents a region from being created in another region.
             foreach (Data.RectRegion r in InputPack.EditingTexture.Regions)
             {
-                if (p.X > r.ScaledX && p.X < (r.X + r.ScaledWidth) &&
-                    p.Y > r.ScaledY && p.Y < (r.Y + r.ScaledHeight))
+                if (p.X >= r.X && p.X < (r.X + r.Width) &&
+                    p.Y >= r.Y && p.Y < (r.Y + r.Height))
                 {
                     _currently_creating_region = null;
-                    //return; fixes the problem that no regions can be created if one exists at 0x0
+                    return;
                 }
             }
 
