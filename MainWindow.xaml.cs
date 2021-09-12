@@ -33,6 +33,7 @@ namespace DolphinDynamicInputTextureCreator
         private void SetInputPack(Data.DynamicInputPack pack)
         {
             DataContext = pack;
+            TestInputPack(InputPack);
             ((ViewModels.PanZoomViewModel)PanZoom.DataContext).InputPack = pack;
         }
 
@@ -227,5 +228,46 @@ namespace DolphinDynamicInputTextureCreator
         {
             PanZoom.ViewModel.FillRegion();
         }
+		
+        #region Test
+        public void TestInputPack(Data.DynamicInputPack inputPack)
+        {
+            foreach (Data.HostDevice device in inputPack.HostDevices)
+            {
+                foreach (Data.HostKey key in device.HostKeys)
+                {
+                    if (!File.Exists(key.TexturePath))
+                    {
+                        key.TexturePath = GetNewImage(key.Name, key.TexturePath);
+                    }
+                }
+            }
+            foreach (Data.DynamicInputTexture texture in inputPack.Textures)
+            {
+                if (!File.Exists(texture.TexturePath))
+                {
+                    texture.TexturePath = GetNewImage(texture.TextureHash, texture.TexturePath);
+                }
+            }
+        }
+
+        private string GetNewImage(string name, string paht)
+        {
+            MessageBoxResult MessageResult;
+            MessageResult = MessageBox.Show(String.Format("'{1}'\nThe image of '{0}' could not be found!\nsearch for the picture?", name, paht), name, MessageBoxButton.YesNo);
+            if (MessageResult == MessageBoxResult.Yes)
+            {
+                var dialog = new System.Windows.Forms.OpenFileDialog();
+                dialog.DefaultExt = ".png";
+                dialog.Filter = "PNG Files (*.png)|*.png";
+                System.Windows.Forms.DialogResult result = dialog.ShowDialog();
+                if (result == System.Windows.Forms.DialogResult.OK)
+                {
+                    return dialog.FileName;
+                }
+            }
+            return paht;
+        }
+        #endregion
     }
 }

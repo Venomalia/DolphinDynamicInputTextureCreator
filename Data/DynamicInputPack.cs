@@ -71,6 +71,24 @@ namespace DolphinDynamicInputTextureCreator.Data
                 OnPropertyChanged(nameof(PreserveAspectRatio));
             }
         }
+
+        private string _game_id = "";
+        public string GameID
+        {
+            get
+            {
+                return _game_id;
+            }
+            set
+            {
+                if (value.Length <= 6)
+                {
+                    _game_id = value.ToUpper();
+                }
+
+                OnPropertyChanged(nameof(GameID));
+            }
+        }
         #endregion
 
         #region DYNAMIC TEXTURE PROPERTIES
@@ -737,6 +755,7 @@ namespace DolphinDynamicInputTextureCreator.Data
         {
             WriteJson(Path.Combine(location, GeneratedJsonName+".json"));
             WriteImages(location);
+            WriteGameID(location);
         }
 
         #region JSON WRITER HELPERS
@@ -753,6 +772,18 @@ namespace DolphinDynamicInputTextureCreator.Data
             return Path.Combine(device_location, Path.GetFileName(key.TexturePath));
         }
         #endregion
+
+        /// <summary>
+        /// creates a GameID.txt so that the pack is recognized.
+        /// </summary>
+        private void WriteGameID(string location)
+        {
+            if (GameID.Length < 3) return;
+
+            location = Path.Combine(location, "GameID");
+            Directory.CreateDirectory(location);
+            File.Create(Path.Combine(location, GameID + ".txt")).Dispose();
+        }
 
         private void WriteImages(string location)
         {
@@ -780,6 +811,10 @@ namespace DolphinDynamicInputTextureCreator.Data
             {
                 foreach (var key in device.HostKeys)
                 {
+                    // skip if the file does not exist.
+                    if (!File.Exists(key.TexturePath))
+                        continue;
+
                     const bool overwrite = true;
                     var texture_location = GetHostDeviceKeyTextureLocation(location, device, key);
                     Directory.CreateDirectory(Path.GetDirectoryName(texture_location));
