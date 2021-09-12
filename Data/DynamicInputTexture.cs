@@ -61,6 +61,23 @@ namespace DolphinDynamicInputTextureCreator.Data
         }
 
         /// <summary>
+        /// The host devices mapped in this image
+        /// </summary>
+        private ObservableCollection<HostDevice> _host_devices = new ObservableCollection<HostDevice>();
+        public ObservableCollection<HostDevice> HostDevices
+        {
+            get
+            {
+                return _host_devices;
+            }
+            set
+            {
+                _host_devices = value;
+                OnPropertyChanged(nameof(HostDevices));
+            }
+        }
+
+        /// <summary>
         /// Regions in the texture that are applicable for replacement
         /// </summary>
         private ObservableCollection<RectRegion> _regions = new ObservableCollection<RectRegion>();

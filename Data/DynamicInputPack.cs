@@ -808,6 +808,27 @@ namespace DolphinDynamicInputTextureCreator.Data
             }
         }
 
+        private void WriteHostControls(JsonWriter writer, ObservableCollection<HostDevice> hostDevices)
+        {
+            writer.WriteStartObject();
+            foreach (var device in hostDevices)
+            {
+                // Skip devices with no mapped keys
+                if (device.HostKeys.Count == 0)
+                    continue;
+
+                writer.WritePropertyName(device.Name);
+                writer.WriteStartObject();
+                foreach (var key in device.HostKeys)
+                {
+                    writer.WritePropertyName(key.Name);
+                    writer.WriteValue(GetHostDeviceKeyTextureLocation("", device, key));
+                }
+                writer.WriteEndObject();
+            }
+            writer.WriteEndObject();
+        }
+
         private void WriteJson(string file)
         {
             using (FileStream fs = File.Open(file, FileMode.Create))
@@ -817,6 +838,15 @@ namespace DolphinDynamicInputTextureCreator.Data
                 writer.Formatting = Formatting.Indented;
 
                 writer.WriteStartObject();
+
+                #region DefaultHOST    
+                // Only create if devices are assigned.   
+                if (HostDevices.Count != 0)
+                {
+                    writer.WritePropertyName("default_host_controls");
+                    WriteHostControls(writer, HostDevices);
+                }
+                #endregion
 
                 #region GENERAL PROPERTIES
                 if (GeneratedFolderName.Length > 0)
@@ -887,28 +917,10 @@ namespace DolphinDynamicInputTextureCreator.Data
 
                     #region HOST    
                     // Only create if devices are assigned.   
-                    if (_host_devices.Count != 0)
+                    if (texture.HostDevices.Count != 0)
                     {
                         writer.WritePropertyName("host_controls");
-                        writer.WriteStartObject();
-                        foreach (var device in _host_devices)
-                        {
-                            // Skip devices with no mapped keys
-                            if (device.HostKeys.Count == 0)
-                            {
-                                continue;
-                            }
-
-                            writer.WritePropertyName(device.Name);
-                            writer.WriteStartObject();
-                            foreach (var key in device.HostKeys)
-                            {
-                                writer.WritePropertyName(key.Name);
-                                writer.WriteValue(GetHostDeviceKeyTextureLocation("", device, key));
-                            }
-                            writer.WriteEndObject();
-                        }
-                        writer.WriteEndObject();
+                        WriteHostControls(writer, texture.HostDevices);
                     }
                     #endregion
 
