@@ -9,11 +9,11 @@
     <Company />
     <Product>Dolphin</Product>
     <Description>A tool for creating dynamic input texture packages for the Dolphin emulator</Description>
-    <Version>14.01.20-0</Version>
+    <Version>15.01.20-0</Version>
     <PackageProjectUrl />
     <RepositoryUrl>https://github.com/iwubcode/DolphinDynamicInputTextureCreator</RepositoryUrl>
-    <AssemblyVersion>14.01.20.0</AssemblyVersion>
-    <FileVersion>14.01.20.0</FileVersion>
+    <AssemblyVersion>15.01.20.0</AssemblyVersion>
+    <FileVersion>15.01.20.0</FileVersion>
     <ApplicationIcon>DynamicInputTextureCreator.ico</ApplicationIcon>
     <PackageId>DolphinDynamicInputTextureCreator</PackageId>
   </PropertyGroup>
