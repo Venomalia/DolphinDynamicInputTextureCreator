@@ -28,6 +28,10 @@
                     <MenuItem Header="_Save Suggestions"  Click="SaveStartupSuggestions_Click"/>
                     <MenuItem Header="_Save as Default Pack"  Click="SaveAsDefaultPack_Click"/>
                 </MenuItem>
+                <MenuItem Header="Extra">
+                    <MenuItem Header="Update Host Devices" Click="UpdateHostDevices_Click" ToolTip="Export the current host devices to other packages"/>
+                    <MenuItem Header="Test All jsons" Click="TestAlljsons_Click"/>
+                </MenuItem>
                 <Separator />
                 <MenuItem Header="_Quit" Name="QuitProgram" Click="QuitProgram_Click" Icon="{DynamicResource Icon.Close}"/>
             </MenuItem>

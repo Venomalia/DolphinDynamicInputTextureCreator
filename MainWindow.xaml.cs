@@ -306,5 +306,60 @@ namespace DolphinDynamicInputTextureCreator
 
         #endregion
 
+        private void UpdateHostDevices_Click(object sender, RoutedEventArgs e)
+        {
+
+            var dialog = new System.Windows.Forms.OpenFileDialog();
+            dialog.Filter = "JSON Files (*.json)|*.json";
+            dialog.Multiselect = true;
+            System.Windows.Forms.DialogResult result = dialog.ShowDialog();
+            if (result == System.Windows.Forms.DialogResult.OK)
+            {
+                foreach (var filename in dialog.FileNames)
+                {
+                    Data.DynamicInputPack inputPack = new Data.DynamicInputPack();
+                    try
+                    {
+                        inputPack.ImportFromLocation(filename);
+                    }
+                    catch (JsonReaderException JRE)
+                    {
+                        MessageBox.Show(String.Format("JSON parse error reading file '{0}' was found on line '{1}'", dialog.FileName, JRE.LineNumber), "Update error!");
+                    continue;
+                    }
+                    inputPack.HostDevices = InputPack.HostDevices;
+                    inputPack.OutputToLocation(System.IO.Path.GetDirectoryName(filename));
+                }
+            }
+        }
+
+        private void TestAlljsons_Click(object sender, RoutedEventArgs e)
+        {
+
+            var dialog = new System.Windows.Forms.OpenFileDialog();
+            dialog.Filter = "JSON Files (*.json)|*.json";
+            dialog.Multiselect = true;
+            System.Windows.Forms.DialogResult result = dialog.ShowDialog();
+            if (result == System.Windows.Forms.DialogResult.OK)
+            {
+                foreach (var filename in dialog.FileNames)
+                {
+                    Data.DynamicInputPack inputPack = new Data.DynamicInputPack();
+                    try
+                    {
+                        inputPack.ImportFromLocation(filename);
+                    }
+                    catch (JsonReaderException JRE)
+                    {
+                        MessageBox.Show(String.Format("JSON parse error reading file '{0}' was found on line '{1}'", dialog.FileName, JRE.LineNumber), "Update error!");
+                        continue;
+                    }
+                    if(!inputPack.CheckImagePaths())
+                    {
+                        MessageBox.Show(String.Format("JSON Image:'{0}'", filename), "Image is missing!");
+                    }
+                }
+            }
+        }
     }
 }
