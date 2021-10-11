@@ -38,6 +38,7 @@ namespace DolphinDynamicInputTextureCreator
             set
             {
                 value.CheckImagePaths();
+                _edit_host_devices_window?.Close();
                 DataContext = value;
                 ((PanZoomViewModel)PanZoom.DataContext).InputPack = value;
                 UnsavedChanges = false;
@@ -48,6 +49,7 @@ namespace DolphinDynamicInputTextureCreator
 
         private Window _edit_emulated_devices_window;
         private Window _edit_default_host_devices_window;
+        private Window _edit_host_devices_window;
         private Window _edit_metadata_window;
 
         private void ExportToLocation_Click(object sender, RoutedEventArgs e)
@@ -82,6 +84,29 @@ namespace DolphinDynamicInputTextureCreator
 
             UpdateEditWindows();
             _edit_default_host_devices_window.Show();
+        }
+
+        public ICommand EditHostDevicesCommand => new ViewModels.Commands.RelayCommand<Data.DynamicInputTexture>(EditHostDevicesS);
+
+        private void EditHostDevicesS(Data.DynamicInputTexture texture)
+        {
+            _edit_host_devices_window?.Close();
+
+            var user_control = new HostDeviceKeyViewModel { HostDevices = new ViewModels.Commands.UICollection<Data.HostDevice>(texture.HostDevices) };
+            texture.HostDevices = user_control.HostDevices;
+
+            _edit_host_devices_window = new Window
+            {
+                Title = "Editing Host Devices of " + texture.TextureHash,
+                ResizeMode = ResizeMode.CanResize,
+                SizeToContent = SizeToContent.Manual,
+                Owner = Application.Current.MainWindow,
+                Top = this.Top + 50, Left = this.Left + 70,
+                Width = 620, Height = 550, MinWidth = 500, MinHeight = 400,
+                Content = new Controls.EditHostDevices { DataContext = user_control }
+            };
+
+            _edit_host_devices_window.Show();
         }
 
         private void EditEmulatedDevices_Click(object sender, RoutedEventArgs e)
