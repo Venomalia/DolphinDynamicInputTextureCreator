@@ -132,7 +132,10 @@ namespace DolphinDynamicInputTextureCreator.ViewModels
             }
         }
 
+        public ExportTextureScalingViewModel ExportTextureScaling { get; } = new ExportTextureScalingViewModel();
+
         #endregion
+
         #region Commands
 
         #region SelectedTexture
